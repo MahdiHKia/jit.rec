@@ -1,0 +1,22 @@
+[flake8]
+max-line-length = 110
+select = C,E,F,W,B,B950
+ignore =
+    # module level import
+    E402,
+    # bare exception
+    E722,
+    # white space before :
+    E203,
+    # white space before operator
+    W503
+exclude =
+    .git,
+    .venv,
+    .env,
+    .history,
+    .vscode,
+    .idea,
+    .local,
+    # auto generated files are excluded
+    */migrations/*

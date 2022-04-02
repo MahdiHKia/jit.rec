@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "jit_rec_backend"
+version = "0.1.0"
+description = ""
+authors = ["mahdi <mahdi.heidari.kia@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "3.2"
+django-cors-headers = "^3.12.0"
+django-mptt = "^0.13.4"
+PyJWT = "^2.4.0"
+pyrtmp = "^0.2.0"
+aiofile = "^3.7.4"
+djangorestframework = "^3.13.1"
+drf-spectacular = "^0.22.1"
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+flake8 = "^4.0.1"
+isort = "^5.10.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+target-version = ['py310']
+line-length = 110
+exclude = '''
+/(
+    \.git
+  | \.env
+  | \.venv
+  | data
+  | \.history
+  | \.vscode
+  | \.idea
+  | \.local
+  | migrations
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+skip_glob = ['.env', '.local*']
+skip = ['migrations']

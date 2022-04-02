@@ -1,0 +1,4 @@
+*.pyc
+public_statics
+recordings
+db.sqlite3
