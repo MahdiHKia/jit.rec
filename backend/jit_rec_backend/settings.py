@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "drf_spectacular",
+    "corsheaders",
+    "jit_rec_auth",
 ]
 
 MIDDLEWARE = [
@@ -116,6 +118,8 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+AUTH_USER_MODEL = "jit_rec_auth.JitRecUser"
 
 
 # Internationalization
