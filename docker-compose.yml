@@ -1,0 +1,42 @@
+version: '2.4'
+
+services:
+  webservice:
+    container_name: jit_rec_webservice
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - FRONTEND_BASE_URL=http://rec.localhost
+    command: >
+      sh -c "python manage.py migrate & python manage.py runserver 0.0.0.0:8000"
+  
+  frontend:
+    container_name: jit_rec_frontend
+    build:
+      context: frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ./frontend/:/app/
+    environment:
+      - REACT_APP_API_BASE_URL=http://api.rec.localhost
+    command: >
+      sh -c "yarn start"
+  
+  nginx:
+    container_name: jit_rec_nginx
+    image: nginx:1.21.6
+    volumes:
+      - ./nginx/config:/etc/nginx/templates
+      - ./backend/public_statics:/var/www/public_statics
+    ports:
+      - "127.0.0.1:80:80"
+    environment:
+     - FRONTEND_HOSTNAME=rec.localhost
+     - WEBSERVICE_HOSTNAME=api.rec.localhost

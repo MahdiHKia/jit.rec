@@ -10,24 +10,39 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from os import environ
 from pathlib import Path
+from urllib.parse import urlparse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+RECORDINGS_PATH = environ.get("RECORDINGS_PATH", "/app/recordings")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-#^i)rr*meg4(96yjf$9tdikr%!e=jft=htqb2j@t93l)6&3^b4"
+
+SECRET_KEY = environ.get("SECRET_KEY", "django-insecure-#^i)rr*meg4(96yjf$9tdikr%!e=jft=htqb2j@t93l)6&3^b4")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = environ.get("DEBUG", "true").lower() == "true"
+BACKEND_BASE_URL = environ.get("BACKEND_BASE_URL", "http://localhost:8000")
+FRONTEND_BASE_URL = environ.get("FRONTEND_BASE_URL", "http://localhost:3000")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    f".{urlparse(BACKEND_BASE_URL).hostname}",
+]
 
 
+CORS_ALLOWED_ORIGINS = [
+    FRONTEND_BASE_URL,
+]
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_COOKIE_DOMAIN = f".{urlparse(FRONTEND_BASE_URL).hostname}"
+CSRF_COOKIE_NAME = "X-CSRFTOKEN"
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,6 +59,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
