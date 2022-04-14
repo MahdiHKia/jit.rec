@@ -4,6 +4,7 @@ import { NotificationsProvider } from '@mantine/notifications';
 
 import logo from './media/logo_anim.svg';
 import { useUserDataLoading } from './store/userDataSlice';
+import Router from './routes';
 
 function App() {
   const [colorScheme, setColorScheme] = useLocalStorage({
@@ -22,6 +23,7 @@ function App() {
             visible={userDataLoading}
             overlayOpacity={0.95}
           />
+          <Router />
         </NotificationsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
