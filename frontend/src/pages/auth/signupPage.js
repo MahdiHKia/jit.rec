@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Anchor, Text } from '@mantine/core';
 
+import SignUpForm from '../../components/auth/signUpForm';
+
 export function SignUpPage() {
   return (
     <>
@@ -10,5 +12,7 @@ export function SignUpPage() {
           LogIn
         </Anchor>
       </Text>
+      <SignUpForm />
+    </>
   );
 }
