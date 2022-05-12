@@ -4,6 +4,7 @@ import { AppShell } from '@mantine/core';
 
 import AppHeader from '../../components/dashboard/AppHeader';
 import AppNavbar from '../../components/dashboard/AppNavBar';
+import DashBoardRotes from '../../routes/dashBoardRotes';
 
 export function DashBoardMainPage() {
   const [navBarIsOpened, setNavBarIsOpened] = useState(false);
@@ -22,6 +23,7 @@ export function DashBoardMainPage() {
       })}
     >
       <div>
+        <DashBoardRotes />
       </div>
     </AppShell>
   );
