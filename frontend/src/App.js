@@ -16,7 +16,7 @@ function App() {
 
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-      <MantineProvider theme={{ colorScheme, fontFamily: 'Open Sans' }} withGlobalStyles>
+      <MantineProvider theme={{ colorScheme, fontFamily: 'Arial, sans-serif' }} withGlobalStyles>
         <NotificationsProvider position="bottom-center">
           <LoadingOverlay
             loader={<Image src={logo} width={100} />}
