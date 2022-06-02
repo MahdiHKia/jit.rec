@@ -12,11 +12,8 @@ def create_default_user(apps, schema_editor):
 
 class Migration(migrations.Migration):
 
-    initial = True
-
     dependencies = [
         ("jit_rec_auth", "0001_initial"),
-        ("dashboard", "0001_initial"),
     ]
 
     operations = [

@@ -24,6 +24,7 @@ from drf_spectacular.views import (
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("jit_rec_auth.urls", namespace="jit_rec_auth")),
+    path("dashboard/", include("dashboard.urls", namespace="dashboard")),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/schema/swagger-ui/",

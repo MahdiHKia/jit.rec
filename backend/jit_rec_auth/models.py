@@ -1,8 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.db import IntegrityError, models, transaction
+from django.db import IntegrityError, models
 from django.utils.translation import gettext_lazy as _
-
-from dashboard.models import Directory
 
 
 class JitRecUserManager(BaseUserManager):
@@ -42,17 +40,8 @@ class JitRecUser(AbstractUser):
         unique=True,
         error_messages={"unique": _("A user with that email already exists.")},
     )
-    root_directory = models.OneToOneField(
-        Directory, on_delete=models.CASCADE, blank=True, related_name="owner"
-    )
 
     username = None
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
     objects = JitRecUserManager()
-
-    @transaction.atomic
-    def save(self, *args, **kwargs) -> None:
-        if not self.root_directory_id:
-            self.root_directory = Directory.objects.create(title="/")
-        return super().save(*args, **kwargs)
