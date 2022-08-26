@@ -1,6 +1,6 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
+  "name": "jit_rec_frontend",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@mantine/core": "^4.2.6",
