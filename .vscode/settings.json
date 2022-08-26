@@ -1,0 +1,48 @@
+{   
+    "files.exclude": {
+        ".venv/": true,
+        "**/node_modules": true,
+        "**/*.pyc": true,
+        "**/__pycache__": true,
+        "**/.git": true
+    },
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true,
+    "python.linting.flake8Args": ["--config=backend/.flake8"],
+    "python.formatting.provider": "black",
+    "python.linting.pylintEnabled": false,
+    "[python]": {
+        "editor.formatOnPaste": false,
+        "editor.formatOnSaveMode": "file",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "cSpell.words": [
+        "Mantine",
+        "MPTT",
+        "pyrtmp",
+        "reduxjs",
+        "rtmp",
+        "webservice"
+    ],
+    "[html][typescriptreact][typescript][javascript][typescriptreact][babeljavascript]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": true
+        },
+    },
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "html"
+    ],
+    "eslint.format.enable": true,
+    "eslint.alwaysShowStatus": true,
+    "eslint.workingDirectories": [
+        "./frontend"
+    ],
+}
