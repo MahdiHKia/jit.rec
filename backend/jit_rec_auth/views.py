@@ -34,9 +34,6 @@ class AuthViewSet(GenericViewSet):
         },
     )
     def login(self, request):
-        import time
-
-        time.sleep(3)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid()
         email, password = serializer.validated_data.get("email"), serializer.validated_data.get("password")
@@ -90,6 +87,10 @@ class UserViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, GenericVie
             return Response(status=200)
         return Response(status=403)
 
+    @extend_schema(
+        request=inline_serializer("logout", {}),
+        responses={200: inline_serializer("logout", {"message": serializers.CharField()})},
+    )
     def logout(self, request):
         logout(request)
-        return Response(status=200)
+        return Response({"message": "user logged out successfully"}, status=200)

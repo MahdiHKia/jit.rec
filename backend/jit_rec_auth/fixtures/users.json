@@ -1,0 +1,19 @@
+[
+{
+    "model": "jit_rec_auth.jitrecuser",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$ICJMV24tzVhnMOSdV1fA7U$eChhrD32x2ylnOeLkQMLrGNTpP4sOB6K0QaXMNAmYY0=",
+        "last_login": null,
+        "is_superuser": true,
+        "first_name": "admin-f-name",
+        "last_name": "admin-l-name",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2022-07-15T17:51:17.165Z",
+        "email": "admin@jit.rec",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]
