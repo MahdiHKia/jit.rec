@@ -14,22 +14,27 @@ from os import environ
 from pathlib import Path
 from urllib.parse import urlparse
 
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-RECORDINGS_PATH = environ.get("RECORDINGS_PATH", "/app/recordings")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = environ.get("SECRET_KEY", "django-insecure-#^i)rr*meg4(96yjf$9tdikr%!e=jft=htqb2j@t93l)6&3^b4")
-
+SECRET_KEY = environ.get("SECRET_KEY", "insecure_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environ.get("DEBUG", "true").lower() == "true"
-BACKEND_BASE_URL = environ.get("BACKEND_BASE_URL", "http://localhost:8000")
-FRONTEND_BASE_URL = environ.get("FRONTEND_BASE_URL", "http://localhost:3000")
+
+SSL_ENABLED = environ.get("SSL_ENABLED", "false").lower() == "true"
+HTTP_PROTOCOL = "https://" if SSL_ENABLED else "http://"
+
+BACKEND_BASE_URL = f'{HTTP_PROTOCOL}{environ.get("BACKEND_HOST")}'
+FRONTEND_BASE_URL = f'{HTTP_PROTOCOL}{environ.get("FRONTEND_HOST")}'
+RTMP_SERVER_BASE_URL = f'rtmp://{environ.get("RTMP_HOST")}:{environ.get("RTMP_PORT")}'
 
 ALLOWED_HOSTS = [
     f".{urlparse(BACKEND_BASE_URL).hostname}",
@@ -42,7 +47,8 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_COOKIE_DOMAIN = f".{urlparse(FRONTEND_BASE_URL).hostname}"
-CSRF_COOKIE_NAME = "X-CSRFTOKEN"
+CSRF_COOKIE_NAME = "X-JR_CSRFTOKEN"
+SESSION_COOKIE_NAME = "JR_sessionid"
 # Application definition
 
 INSTALLED_APPS = [
@@ -58,6 +64,7 @@ INSTALLED_APPS = [
     "mptt",
     "jit_rec_auth",
     "dashboard",
+    "rtmp_recorder",
 ]
 
 MIDDLEWARE = [
@@ -96,10 +103,7 @@ WSGI_APPLICATION = "jit_rec_backend.wsgi.application"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(default=environ.get("DEFAULT_DATABASE_URL", "sqlite:///db.sqlite3"))
 }
 
 
@@ -142,7 +146,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = "public_statics"
+STATIC_ROOT = "statics"
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -151,3 +155,24 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {"format": "[%(levelname)s] [PID %(process)d] [%(asctime)s] [%(module)s] :: %(message)s"},
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+}
+
+RECORDINGS_PATH = BASE_DIR / "data/recordings"
+RECORD_TOKEN_TTL_MINUTES = int(environ.get("RECORD_TOKEN_TTL_MINUTES", 60 * 24))
