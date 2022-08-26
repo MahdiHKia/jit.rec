@@ -45,17 +45,12 @@ services:
     build:
       context: frontend
       dockerfile: ${FRONTEND_DOCKER_FILE:-Dockerfile}
-      # args:
-      #   - BACKEND_HOST=${BACKEND_HOST}
-      #   - SSL_ENABLED=${SSL_ENABLED}
     volumes:
       - ./frontend/:/app/
     environment:
       - BACKEND_HOST
       - SSL_ENABLED
-      # - REACT_APP_BACKEND_HOST=${BACKEND_HOST}
-      # - REACT_APP_SSL_ENABLED=${SSL_ENABLED}
-  
+
   nginx:
     container_name: jit_rec_nginx
     image: nginx:1.23.1-alpine
