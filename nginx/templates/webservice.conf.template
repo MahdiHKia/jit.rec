@@ -1,9 +1,17 @@
 server {
     listen 80;
-    server_name ${FRONTEND_HOSTNAME};
+    server_name ${BACKEND_HOST};
+
+    location /statics/recordings {
+        alias /app/backend/data/recordings;
+    }
+    location /static {
+        alias /app/backend/statics;
+    }
+
 
     location / {
-        proxy_pass http://frontend:3000;
+        proxy_pass http://${BACKEND_INTERNAL_HOSTNAME};
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
@@ -13,6 +21,5 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Host $server_name;
-
     }
 }

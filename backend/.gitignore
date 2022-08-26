@@ -1,4 +1,3 @@
 *.pyc
-public_statics
-recordings
+statics
 db.sqlite3

@@ -6,37 +6,73 @@ services:
     build:
       context: backend
       dockerfile: Dockerfile
-    ports:
-      - "127.0.0.1:8000:8000"
     volumes:
       - ./backend:/app
     environment:
-      - FRONTEND_BASE_URL=http://rec.localhost
+      - SSL_ENABLED
+      - DEFAULT_DATABASE_URL
+      - BACKEND_HOST
+      - FRONTEND_HOST
+      - RTMP_HOST
+      - RTMP_PORT
+      - SECRET_KEY
+      - DEBUG
+      - RECORD_TOKEN_TTL_MINUTES
     command: >
       sh -c "python manage.py migrate & python manage.py runserver 0.0.0.0:8000"
+  
+  rtmp_server:
+    container_name: jit_rec_rtmp_server
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+    environment:
+      - SSL_ENABLED
+      - DEFAULT_DATABASE_URL
+      - BACKEND_HOST
+      - FRONTEND_HOST
+      - RTMP_HOST
+      - RTMP_PORT
+      - SECRET_KEY
+      - DEBUG
+      - RECORD_TOKEN_TTL_MINUTES
+    command: python manage.py run_rtmp_server --host=0.0.0.0 --port=1935 --workers=${RTMP_WORKERS}
   
   frontend:
     container_name: jit_rec_frontend
     build:
       context: frontend
-      dockerfile: Dockerfile.dev
-    ports:
-      - "127.0.0.1:3000:3000"
+      dockerfile: ${FRONTEND_DOCKER_FILE:-Dockerfile}
+      # args:
+      #   - BACKEND_HOST=${BACKEND_HOST}
+      #   - SSL_ENABLED=${SSL_ENABLED}
     volumes:
       - ./frontend/:/app/
     environment:
-      - REACT_APP_API_BASE_URL=http://api.rec.localhost
-    command: >
-      sh -c "yarn start"
+      - BACKEND_HOST
+      - SSL_ENABLED
+      # - REACT_APP_BACKEND_HOST=${BACKEND_HOST}
+      # - REACT_APP_SSL_ENABLED=${SSL_ENABLED}
   
   nginx:
     container_name: jit_rec_nginx
-    image: nginx:1.21.6
+    image: nginx:1.23.1-alpine
     volumes:
-      - ./nginx/config:/etc/nginx/templates
-      - ./backend/public_statics:/var/www/public_statics
+      - ./nginx/templates:/etc/nginx/templates
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/http.conf:/etc/nginx/http.conf
+      - ./backend/statics:/app/backend/statics
+      - ./backend/data/recordings:/app/backend/data/recordings
     ports:
       - "127.0.0.1:80:80"
+      - "127.0.0.1:${RTMP_PORT}:${RTMP_PORT}"
     environment:
-     - FRONTEND_HOSTNAME=rec.localhost
-     - WEBSERVICE_HOSTNAME=api.rec.localhost
+     - FRONTEND_HOST
+     - BACKEND_HOST
+     - RTMP_HOST
+     - RTMP_PORT
+     - BACKEND_INTERNAL_HOSTNAME
+     - FRONTEND_INTERNAL_HOSTNAME
+     - RTMP_INTERNAL_HOSTNAME

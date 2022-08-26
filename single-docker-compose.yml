@@ -1,0 +1,37 @@
+version: '2.4'
+
+services:
+  jit_rec:
+    container_name: jit_rec
+    build:
+      context: .
+      # args:
+      #   - BACKEND_HOST=${BACKEND_HOST}
+      #   - SSL_ENABLED=${SSL_ENABLED}
+  
+    # volumes:
+    #   - ./backend/data:/app/backend/data
+    ports:
+      - "127.0.0.1:80:80"
+      - "127.0.0.1:${RTMP_PORT}:${RTMP_PORT}"
+    environment:
+      - BACKEND_HOST
+      - FRONTEND_HOST
+      - RTMP_HOST
+      - RTMP_PORT
+      
+      # - REACT_APP_BACKEND_HOST=${BACKEND_HOST}
+      # - REACT_APP_SSL_ENABLED=${SSL_ENABLED}
+
+      - SSL_ENABLED
+      - DEFAULT_DATABASE_URL
+      - SECRET_KEY
+      - DEBUG
+      - RECORD_TOKEN_TTL_MINUTES
+      - RTMP_WORKERS
+
+      - BACKEND_INTERNAL_HOSTNAME
+      - FRONTEND_INTERNAL_HOSTNAME
+      - RTMP_INTERNAL_HOSTNAME
+      - NGINX_ENTRYPOINT_QUIET_LOGS="true"
+

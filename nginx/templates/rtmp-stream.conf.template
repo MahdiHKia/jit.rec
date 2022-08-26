@@ -1,0 +1,4 @@
+server {
+    listen ${RTMP_PORT};
+    proxy_pass ${RTMP_INTERNAL_HOSTNAME};
+}

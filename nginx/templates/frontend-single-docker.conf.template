@@ -1,0 +1,26 @@
+server {
+    listen 80;
+    server_name ${FRONTEND_HOSTNAME};
+
+    expires -1;
+    root /app/frontend/;
+
+    add_header Strict-Transport-Security "max-age=2592000; includeSubDomains; preload";
+    add_header X-Frame-Options "SAMEORIGIN";
+
+    location / {
+        try_files $uri /index.html;
+    }
+
+    location /static {
+        access_log   off;
+        expires      30d;
+        try_files $uri /index.html;
+    }
+
+    location /asset-manifest.json {
+        access_log   off;
+        expires      30d;
+        try_files $uri /index.html;
+    }
+}
