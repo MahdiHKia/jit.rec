@@ -25,7 +25,7 @@ class GetUserDirectoryMixin:
                 )
             except Directory.DoesNotExist:
                 directory = Directory(owner=self.request.user, title="root")
-                if self.action == "POST":
+                if self.request.method == "POST":
                     directory.save()
                 return directory
         return get_object_or_404(self.get_user_directory_queryset(), owner=self.request.user, id=pk)
@@ -72,7 +72,7 @@ class RecordingViewSet(
         return Recording.objects.filter(directory=directory)
 
     def get_object(self):
-        return self.get_queryset().filter(id=self.kwargs["rec_pk"])
+        return self.get_queryset().get(id=self.kwargs["rec_pk"])
 
     @extend_schema(responses={201: DirectoryDetailsSerializer})
     def create(self, request, *args, **kwargs):
@@ -81,4 +81,6 @@ class RecordingViewSet(
         serializer.is_valid(True)
         Recording.objects.create(**serializer.validated_data, directory=directory)
         directory.refresh_from_db()
-        return Response(DirectoryDetailsSerializer(directory).data, status.HTTP_201_CREATED)
+        return Response(
+            DirectoryDetailsSerializer(directory, context={"request": request}).data, status.HTTP_201_CREATED
+        )
