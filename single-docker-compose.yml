@@ -5,12 +5,9 @@ services:
     container_name: jit_rec
     build:
       context: .
-      # args:
-      #   - BACKEND_HOST=${BACKEND_HOST}
-      #   - SSL_ENABLED=${SSL_ENABLED}
   
-    # volumes:
-    #   - ./backend/data:/app/backend/data
+    volumes:
+      - ./backend/data:/app/backend/data
     ports:
       - "127.0.0.1:80:80"
       - "127.0.0.1:${RTMP_PORT}:${RTMP_PORT}"
@@ -19,9 +16,6 @@ services:
       - FRONTEND_HOST
       - RTMP_HOST
       - RTMP_PORT
-      
-      # - REACT_APP_BACKEND_HOST=${BACKEND_HOST}
-      # - REACT_APP_SSL_ENABLED=${SSL_ENABLED}
 
       - SSL_ENABLED
       - DEFAULT_DATABASE_URL
