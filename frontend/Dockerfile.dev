@@ -1,10 +1,13 @@
-FROM node:16.14-alpine
+FROM node:16.14.0-slim
 
 WORKDIR /app
 
-COPY package.json package.json
-COPY yarn.lock yarn.lock
+ADD package.json yarn.lock ./
 RUN yarn install
 
 COPY . .
+
+RUN chmod +x "/app/generate_env_config.sh"
+ENTRYPOINT [ "generate_env_config.sh", "-t", "env_config_template.js", "-e", "public/env.js" ]
+
 CMD [ "yarn", "start" ]
