@@ -14,6 +14,7 @@ export function DashBoardMainPage() {
   return (
     <AppShell
       padding="md"
+      style={{ marginTop: -20 }}
       navbarOffsetBreakpoint="sm"
       fixed
       navbar={<AppNavbar navBarIsOpened={navBarIsOpened} />}

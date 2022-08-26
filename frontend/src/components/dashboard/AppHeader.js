@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { Burger, Button, Group, Header, Image, MediaQuery, Text, useMantineTheme } from '@mantine/core';
+import { ActionIcon, Burger, Group, Header, Image, MediaQuery, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import PropTypes from 'prop-types';
 import { Power } from 'tabler-icons-react';
@@ -35,9 +35,9 @@ export default function AppHeader({ navBarIsOpened, setNavBarIsOpened }) {
         </Group>
         <Group>
           {isPhone ? <DarkModeSegmentedToggle /> : <DarkModeButtonToggle />}
-          <Button color={'red'} onClick={handleLogout}>
+          <ActionIcon size={35} variant="filled" color={'red'} onClick={handleLogout}>
             <Power size={20} />
-          </Button>
+          </ActionIcon>
         </Group>
       </Group>
     </Header>

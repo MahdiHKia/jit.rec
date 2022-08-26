@@ -1,4 +1,4 @@
-import { Button, Center, SegmentedControl, useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, Center, SegmentedControl, useMantineColorScheme } from '@mantine/core';
 import { MoonStars, Sun } from 'tabler-icons-react';
 
 export function DarkModeSegmentedToggle() {
@@ -35,7 +35,7 @@ export function DarkModeSegmentedToggle() {
 export function DarkModeButtonToggle() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   return (
-    <Button variant="default" onClick={() => toggleColorScheme()}>
+    <ActionIcon size={35} variant="default" onClick={() => toggleColorScheme()}>
       <Center>
         {colorScheme === 'dark' ? (
           <>
@@ -47,6 +47,6 @@ export function DarkModeButtonToggle() {
           </>
         )}
       </Center>
-    </Button>
+    </ActionIcon>
   );
 }
