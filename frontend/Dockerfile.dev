@@ -7,7 +7,4 @@ RUN yarn install
 
 COPY . .
 
-RUN chmod +x "/app/generate_env_config.sh"
-ENTRYPOINT [ "generate_env_config.sh", "-t", "env_config_template.js", "-e", "public/env.js" ]
-
-CMD [ "yarn", "start" ]
+CMD [ "bash", "-c" , "./generate_env_config.sh -t env_config_template.js -e public/env.js && yarn start" ]
